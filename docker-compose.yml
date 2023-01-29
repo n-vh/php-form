@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: .
+    container_name: form-webserver
+    ports:
+      - 4404:80
+    restart: always
+    volumes:
+      - ./www:/var/www/html
+    env_file:
+      - ./docker.env
+    networks:
+      - becode
+
+  database:
+    image: mariadb:10.4.2
+    container_name: form-database
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d/
+      - form_data:/var/lib/mysql
+    env_file:
+      - ./docker.env
+    networks:
+      - becode
+
+  myadmin:
+    image: phpmyadmin/phpmyadmin:4.8.1
+    container_name: form-phpmyadmin
+    ports:
+      - 8081:80
+    restart: always
+    env_file:
+      - ./docker.env
+    depends_on:
+      - database
+    networks:
+      - becode
+
+networks:
+  becode:
+
+volumes:
+  form_data:
