@@ -37,38 +37,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
   <title>Login</title>
 </head>
 
-<body>
-  <h1>
-    Log in
-  </h1>
-  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <div>
-      <label for="username">Username</label>
-      <input type="username" name="username" id="username" value="<? echo $username ?>" required="">
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" placeholder="••••••••" value="<? echo $password ?>"
-        required="">
-    </div>
+<body class="bg-gray-900 font-['Inter']">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
+    <div class="w-full bg-white rounded-lg shadow border sm:max-w-md bg-gray-800 border-gray-700">
+      <div class="p-8 space-y-4">
+        <h1 class="font-bold text-2xl text-white">
+          Log in
+        </h1>
+        <form class="space-y-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+          <div>
+            <label for="username" class="block mb-2 text-md font-medium text-white">Username</label>
+            <input type="username" name="username" id="username" value="<? echo $username ?>"
+              class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              required="">
+          </div>
+          <div>
+            <label for="password" class="block mb-2 text-md font-medium text-white">Password</label>
+            <input type="password" name="password" id="password" placeholder="••••••••" value="<? echo $password ?>"
+              class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              required="">
+          </div>
 
-    <?
-      if ($incorrect_input) {
-        echo "<p>Incorrect username or password.</p>";
-      }
-    ?>
+          <?
+            if ($incorrect_input) {
+              echo "<p class='text-sm font-medium text-red-600'>Incorrect username or password.</p>";
+            }
+          ?>
 
-    <button type="submit">
-      Login
-    </button>
-    <p>
-      Don't have an account yet?
-      <a href="#">Sign Up</a>
-    </p>
-  </form>
+          <button type="submit"
+            class="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-md px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+            Login
+          </button>
+          <p class="text-sm font-medium text-gray-400">
+            Don't have an account yet?
+            <a href="#" class="font-medium text-blue-500 underline">Sign Up</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
