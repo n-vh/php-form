@@ -1,6 +1,6 @@
 <?php
-include('database.php');
-include('form_validation.php');
+include('includes/database.php');
+include('includes/form_validation.php');
 session_start();
 
 $email = $username = $password = $confirm_password = '';

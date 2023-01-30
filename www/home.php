@@ -1,5 +1,5 @@
 <?php
-include('database.php');
+include('includes/database.php');
 session_start();
 
 if (!isset($_SESSION['user'])) {
