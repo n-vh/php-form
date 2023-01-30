@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form class="flex flex-col gap-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <div>
             <label for="username" class="block mb-2 text-md font-medium text-white">Username</label>
-            <input type="username" name="username" id="username" value="<? echo $username ?>"
+            <input type="text" name="username" id="username" value="<? echo $username ?>"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               required="">
           </div>

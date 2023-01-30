@@ -1,5 +1,6 @@
 <?php
 include('database.php');
+include('form_validation.php');
 session_start();
 
 $email = '';
@@ -15,6 +16,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $email = $_POST['email'];
   $password = $_POST['password'];
   $confirm_password = $_POST['confirm_password'];
+
+  $errors["email"] = check_email($email);
+  $errors["username"] = check_username($username);
+
+  foreach ($errors as $key => $value) {
+    if ($value == null) {
+      unset($errors[$key]);
+    }
+  }
 
   if (empty($errors)) {
     try {
@@ -68,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form class="flex flex-col gap-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <div>
             <label for="email" class="block mb-2 text-md font-medium text-white">Email</label>
-            <input type="email" name="email" id="email" value="<? echo $email ?>" maxlength="255"
+            <input type="text" name="email" id="email" value="<? echo $email ?>" maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="name@example.com" required="">
             <?php
@@ -79,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
           <div>
             <label for="username" class="block mb-2 text-md font-medium text-white">Username</label>
-            <input type="username" name="username" id="username" value="<? echo $username ?>" maxlength="255"
+            <input type="text" name="username" id="username" value="<? echo $username ?>" maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
             <?php
             if (isset($errors['username'])) {
