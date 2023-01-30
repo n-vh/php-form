@@ -6,6 +6,8 @@ $email = '';
 $username = '';
 $password = '';
 $confirm_password = '';
+
+$errors = array();
 $successful = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,16 +16,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $password = $_POST['password'];
   $confirm_password = $_POST['confirm_password'];
 
-  try {
-    $q = $conn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
-    $q->bindParam(':username', $username);
-    $q->bindParam(':email', $email);
-    $q->bindParam(':password', $password);
+  if (empty($errors)) {
+    try {
+      $req = $conn->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
+      $req->bindParam(':username', $username);
+      $req->bindParam(':email', $email);
+      $req->execute();
+      $user = $req->fetch(PDO::FETCH_ASSOC);
 
-    $q->execute();
-    $successful = true;
-  } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+      if ($user) {
+        if ($user["email"] === $email) {
+          $errors["email"] = "This email is already used.";
+        } else if ($user["username"] === $username) {
+          $errors["username"] = "This username is unavailable.";
+        }
+      } else {
+        $q = $conn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+        $q->bindParam(':username', $username);
+        $q->bindParam(':email', $email);
+        $q->bindParam(':password', $password);
+
+        $q->execute();
+
+        $successful = true;
+      }
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
   }
 }
 ?>
@@ -52,11 +71,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="email" name="email" id="email" value="<? echo $email ?>" maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="name@example.com" required="">
+            <?php
+            if (isset($errors['email'])) {
+              echo "<p class='mt-2 text-sm text-red-500'>" . $errors['email'] . "</p>";
+            }
+            ?>
           </div>
           <div>
             <label for="username" class="block mb-2 text-md font-medium text-white">Username</label>
             <input type="username" name="username" id="username" value="<? echo $username ?>" maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+            <?php
+            if (isset($errors['username'])) {
+              echo "<p class='mt-2 text-sm text-red-500'>" . $errors['username'] . "</p>";
+            }
+            ?>
           </div>
           <div>
             <label for="password" class="block mb-2 text-md font-medium text-white">Password</label>
