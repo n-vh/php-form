@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1 class="font-bold text-2xl text-white">
           Log in
         </h1>
-        <form class="space-y-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <form class="flex flex-col gap-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <div>
             <label for="username" class="block mb-2 text-md font-medium text-white">Username</label>
             <input type="username" name="username" id="username" value="<? echo $username ?>"
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
           <?
             if ($incorrect_input) {
-              echo "<p class='text-sm font-medium text-red-600'>Incorrect username or password.</p>";
+              echo "<p class='text-sm font-medium text-red-500'>Incorrect username or password.</p>";
             }
           ?>
 
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </button>
           <p class="text-sm font-medium text-gray-400">
             Don't have an account yet?
-            <a href="#" class="font-medium text-blue-500 underline">Sign Up</a>
+            <a href="/signup.php" class="font-medium text-blue-500 underline">Sign up</a>
           </p>
         </form>
       </div>
