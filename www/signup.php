@@ -15,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $errors["email"] = check_email($email);
   $errors["username"] = check_username($username);
+  $errors["password"] = check_password($password);
+  $errors["confirm_password"] = check_confirm_password($password, $confirm_password);
 
   foreach ($errors as $key => $value) {
     if ($value == null) {
@@ -37,11 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $user = $req->fetch(PDO::FETCH_ASSOC);
 
       if ($user) {
-        if ($user["email"] === $params["email"]) {
-          $errors["email"] = "This email is already used.";
-        } else if ($user["username"] === $params["username"]) {
-          $errors["username"] = "This username is unavailable.";
-        }
+        $errors["email"] = verify_email_equality($params["email"], $user["email"]);
+        $errors["username"] = verify_username_equality($params["username"], $user["username"]);
       } else {
         $q = $conn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
         $q->bindParam(':username', $params["username"]);
@@ -82,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="email" class="block mb-2 text-md font-medium text-white">Email</label>
             <input type="text" name="email" id="email" value="<? echo $email ?>" maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="name@example.com" required="">
+              placeholder="example@becode.be">
             <?php
             if (isset($errors['email'])) {
               echo "<p class='mt-2 text-sm text-red-500'>" . $errors['email'] . "</p>";
@@ -92,7 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div>
             <label for="username" class="block mb-2 text-md font-medium text-white">Username</label>
             <input type="text" name="username" id="username" value="<? echo $username ?>" maxlength="255"
-              class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+              class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              placeholder="swartz7">
             <?php
             if (isset($errors['username'])) {
               echo "<p class='mt-2 text-sm text-red-500'>" . $errors['username'] . "</p>";
@@ -105,6 +105,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               required="">
+            <?php
+            if (isset($errors['password'])) {
+              echo "<p class='mt-2 text-sm text-red-500'>" . $errors['password'] . "</p>";
+            }
+            ?>
           </div>
           <div>
             <label for="confirm_password" class="block mb-2 text-md font-medium text-white">Confirm password</label>
@@ -112,6 +117,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               value="<? echo $confirm_password ?>" maxlength="255"
               class="border rounded-lg block w-full px-4 py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               required="">
+            <?php
+            if (isset($errors['confirm_password'])) {
+              echo "<p class='mt-2 text-sm text-red-500'>" . $errors['confirm_password'] . "</p>";
+            }
+            ?>
           </div>
           <button type="submit"
             class="w-full mt-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-md px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
