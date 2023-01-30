@@ -21,7 +21,7 @@ function check_username($username)
     return "Username was left blank.";
   } elseif (strlen($username) < 4) {
     return "Username is too short.";
-  } elseif (strlen($username) > 26) {
+  } elseif (strlen($username) > 25) {
     return "Username is too long.";
   } elseif (!preg_match('/^[a-zA-Z0-9]*$/', $username)) {
     return "Username must only contain letters and numbers.";

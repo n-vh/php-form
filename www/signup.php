@@ -134,6 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <a href="/index.php" class="text-blue-500 underline">Login</a>
             </p>
           <?php } ?>
+
+          <p class="text-sm font-medium text-gray-400">
+            Do you already have an account?
+            <a href="/index.php" class="font-medium text-blue-500 underline">Login</a>
+          </p>
         </form>
       </div>
     </div>
