@@ -13,6 +13,8 @@ Make a working registration form which includes a login page, a sign up page and
 
 https://php-form.rct.re/
 
+![example](https://user-images.githubusercontent.com/117943210/215461713-9f6c1584-7b11-4291-96ab-fe51755d33a0.png)
+
 ## Host it locally
 
 1. Clone the repository locally.
