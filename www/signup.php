@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
           <button type="submit"
             class="w-full mt-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-md px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
-            Sign Up
+            Sign up
           </button>
 
           <?php if ($successful) { ?>
@@ -133,12 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               Successfully registered!
               <a href="/index.php" class="text-blue-500 underline">Login</a>
             </p>
+          <?php } else { ?>
+            <p class="text-sm font-medium text-gray-400">
+              Do you already have an account?
+              <a href="/index.php" class="font-medium text-blue-500 underline">Login</a>
+            </p>
           <?php } ?>
-
-          <p class="text-sm font-medium text-gray-400">
-            Do you already have an account?
-            <a href="/index.php" class="font-medium text-blue-500 underline">Login</a>
-          </p>
         </form>
       </div>
     </div>
