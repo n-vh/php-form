@@ -3,11 +3,7 @@ include('database.php');
 include('form_validation.php');
 session_start();
 
-$email = '';
-$username = '';
-$password = '';
-$confirm_password = '';
-
+$email = $username = $password = $confirm_password = '';
 $errors = array();
 $successful = false;
 
@@ -27,24 +23,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   if (empty($errors)) {
+    $params = array(
+      "email" => filter_var($email, FILTER_SANITIZE_EMAIL),
+      "username" => htmlspecialchars($username),
+      "password" => md5($password),
+    );
+
     try {
       $req = $conn->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
-      $req->bindParam(':username', $username);
-      $req->bindParam(':email', $email);
+      $req->bindParam(':username', $params["username"]);
+      $req->bindParam(':email', $params["email"]);
       $req->execute();
       $user = $req->fetch(PDO::FETCH_ASSOC);
 
       if ($user) {
-        if ($user["email"] === $email) {
+        if ($user["email"] === $params["email"]) {
           $errors["email"] = "This email is already used.";
-        } else if ($user["username"] === $username) {
+        } else if ($user["username"] === $params["username"]) {
           $errors["username"] = "This username is unavailable.";
         }
       } else {
         $q = $conn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
-        $q->bindParam(':username', $username);
-        $q->bindParam(':email', $email);
-        $q->bindParam(':password', $password);
+        $q->bindParam(':username', $params["username"]);
+        $q->bindParam(':email', $params["email"]);
+        $q->bindParam(':password', $params["password"]);
 
         $q->execute();
 

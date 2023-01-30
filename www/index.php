@@ -2,18 +2,22 @@
 include('database.php');
 session_start();
 
+$username = $password = '';
 $incorrect_input = false;
-$username = '';
-$password = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST['username'];
   $password = $_POST['password'];
 
+  $params = array(
+    "username" => trim(htmlspecialchars($username)),
+    "password" => md5($password),
+  );
+
   try {
     $req = $conn->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
-    $req->bindParam(':username', $username);
-    $req->bindParam(':password', $password);
+    $req->bindParam(':username', $params["username"]);
+    $req->bindParam(':password', $params["password"]);
     $req->execute();
     $user = $req->fetch(PDO::FETCH_ASSOC);
 
